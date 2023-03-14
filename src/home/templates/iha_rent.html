@@ -1,0 +1,18 @@
+{% extends 'customer_navbar.html' %}
+{% block title %} Customer Login {% endblock %}
+{% block css %}
+{% endblock %}
+{% block body %}
+<div class="container mt-4">
+<b>Iha : {{iha.name}}</b>
+<form class="w3-container" action="/order_details/" method="post">
+    {% csrf_token %}
+    <b>Price : ₹ {{cost_per_day}} per day</b><br><br>
+    <lable>How many days?</lable> 
+    <input type="text" placeholder="2" name="days"><br><br>
+    <button class="btn" style="color: white; background-color: rgb(0, 98, 128);" type="submit">Confirm</button><br><br>
+    <input type="hidden" value="{{iha.id}}" name="id">
+    <br><br>
+  </from>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'customer_navbar.html' %}
+{% block title %} Search Ihas {% endblock %}
+{% block css %}
+{% endblock %}
+{% block body %}
+<br>
+<div class="container ">
+  <div class="p-5 bg-light rounded-3">
+    <div class="container-fluid">
+      <h1 class="display-5 fw-bold">Welcome to Ahmet Hakan Özgüven Online Iha Rental System</h1>
+      <p class="col-md-8 fs-4">You can enter your city below and see the list of available ihas.</p>
+    </div>
+    <form class="w3-container" action="/search_results/" method="post">
+        {% csrf_token %}
+        <br><br>
+        <lable><i style="font-weight: bold; font-size: large;">Enter City Name :</i></lable> 
+        <input type="text" class="form-control mt-3" name="city"><br>
+        <button class="btn btn-primary" type="submit">Search Ihas</button>
+      </form>
+  </div>
+</div>
+{% endblock %}

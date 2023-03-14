@@ -1,0 +1,59 @@
+{% extends 'iha_dealer_navbar.html' %}
+{% block title %} Customer Login {% endblock %}
+{% block css %}
+<style>
+    h1 {
+        text-align: center;
+        color: black;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    th {
+        background-color: #72a716;
+        color: white;
+    }
+
+    th,
+    td {
+        border: 2px solid #ddd;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<div class="container">
+    {% if ihas %}
+    <h1 class="mt-4">Ihas List</h1>
+    <div class="users-table mt-4">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Iha Name</th>
+                    <th>Image</th>
+                    <th>City</th>
+                    <th>Capacity</th>
+                    <th>Delete</th>
+                </tr>
+                {% for iha in ihas %}
+                <tr>
+                    <td>{{iha.name}}</td>
+                    <td><img src="{{iha.image.url}}" alt="" width="100px" height="100px"></td>
+                    <td>{{iha.location.city}}</td>
+                    <td>{{iha.capacity}}</td>
+                    <td><a href="/delete_iha/{{iha.id}}/" class="btn btn-danger"
+                            onclick="return confirm('Are you sure you want to delete {{iha.name}}?')">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <br>
+        <h2>No Ihas Added Yet</h2>
+        {% endif %}
+    </div>
+    {% endblock %}

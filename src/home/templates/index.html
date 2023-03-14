@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} Rent Ihas {% endblock %}
+{% block css %}
+{% endblock %}
+{% block body %}
+<div class="container mt-4">
+    <div>
+      <h1 class="display-4">Ahmet Hakan Özgüven Iha Rental System</h1>
+      <p class="lead">You can select Ihas availabe.</p>
+      <hr class="my-4">
+    </div>
+    <div class="row mt-4">
+{% for iha in ihas %}
+      <div class="col-sm-4 mt-4">
+        <div class="card" style="width: 20rem; height: 24rem;">
+          <img class="card-img-top" src="/media/{{iha.image}}" alt="Card image cap" height="260px">
+          <div class="card-body">
+            <h5 class="card-title">Iha Name: {{iha.name}}</h5>
+            <h6 class="card-text">Iha Dealer: <b>{{iha.iha_dealer}}</b></h6>
+            <p class="card-text">Rent: TL{{iha.rent}} per day</p>
+            <a href="/customer_login/" class="btn btn-primary">Login to Rent </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
