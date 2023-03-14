@@ -13,7 +13,7 @@ table{
     font-size: 20px;
 }
 th{
-    background-color: #72a716;
+    background-color: #0065d8b9;
     color: white;
 }
 th, td{
@@ -33,7 +33,6 @@ th, td{
                 <th>Image</th>
                 <th>Days</th>
                 <th>Rent</th>
-                <th>Capacity</th>
                 <th>Action</th>
             </tr>
             {% for order in all_orders %}
@@ -41,8 +40,7 @@ th, td{
                 <td>{{order.iha.name}}</td>
                 <td><img src="{{order.iha.image.url}}" alt="" width="100px" height="100px"></td>
                 <td>{{order.days}}</td>
-                <td>₹ {{order.rent}}</td>
-                <td>{{order.iha.capacity}}</td>
+                <td>{{order.rent}} TL</td>
                 <td><a href="/delete_order/{{order.id}}/" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{iha.name}}?')">Delete</a></td>
             </tr>
             {% endfor %}

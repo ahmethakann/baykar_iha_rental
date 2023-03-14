@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from . models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     ihas = Iha.objects.all()
@@ -52,7 +53,7 @@ def customer_login(request):
             password = request.POST['password']
             user = authenticate(username=username, password=password)
 
-            if user is not None:
+            if user is not None and user.is_authenticated:
                 user1 = Customer.objects.get(user=user)
                 if user1.type == "Customer":
                     login(request, user)
@@ -103,13 +104,18 @@ def iha_dealer_login(request):
             user = authenticate(username=username, password=password)
 
             if user is not None:
-                user1 = IhaDealer.objects.get(iha_dealer=user)
+                try:
+                    user1 = IhaDealer.objects.get(iha_dealer=user)
+                except ObjectDoesNotExist:
+                    # Handle the DoesNotExist exception here
+                    alert = True
+                    return render(request, "iha_dealer_login.html", {"alert": alert})
                 if user1.type == "Iha Dealer":
                     login(request, user)
                     return redirect("/all_ihas")
                 else:
                     alert = True
-                    return render(request, "iha_dealer_login.html", {"alert":alert})
+                    return render(request, "iha_dealer_login.html", {"alert": alert})
     return render(request, "iha_dealer_login.html")
 
 def signout(request):
@@ -121,18 +127,28 @@ def add_iha(request):
         iha_name = request.POST['iha_name']
         city = request.POST['city']
         image = request.FILES['image']
-        capacity = request.POST['capacity']
         rent = request.POST['rent']
+        operational_altitude = request.POST['operational_altitude']
+        max_altitude = request.POST['max_altitude']
+        max_flight_time = request.POST['max_flight_time']
+        payload_capacity = request.POST['payload_capacity']
+        communication_range = request.POST['communication_range']
+        fuel_capacity = request.POST['fuel_capacity']
+        cruise_speed = request.POST['cruise_speed']
+        max_speed = request.POST['max_speed']
+        max_takeoff_weight = request.POST['max_takeoff_weight']
+        height = request.POST['height']
+        wingspan = request.POST['wingspan']
+        lenght = request.POST['lenght']
         iha_dealer = IhaDealer.objects.get(iha_dealer=request.user)
+        
         try:
             location = Location.objects.get(city=city)
-        except:
-            location = None
-        if location is not None:
-            iha = Iha(name=iha_name, iha_dealer=iha_dealer, location=location, capacity=capacity, image=image, rent=rent)
-        else:
+        except Location.DoesNotExist:
             location = Location(city=city)
-            iha = Iha(name=iha_name, iha_dealer=iha_dealer, location=location, capacity=capacity, image=image, rent=rent)
+            location.save()
+        
+        iha = Iha(name=iha_name, iha_dealer=iha_dealer, location=location, image=image, rent=rent, operational_altitude=operational_altitude, max_altitude=max_altitude, max_flight_time=max_flight_time, payload_capacity=payload_capacity, communication_range=communication_range, fuel_capacity=fuel_capacity, cruise_speed=cruise_speed, max_speed=max_speed, max_takeoff_weight=max_takeoff_weight, height=height, wingspan=wingspan, lenght=lenght)
         iha.save()
         alert = True
         return render(request, "add_iha.html", {'alert':alert})
@@ -186,7 +202,7 @@ def search_results(request):
         ihas = Iha.objects.filter(location=a)
         for iha in ihas:
             if iha.is_available == True:
-                vehicle_dictionary = {'name':iha.name, 'id':iha.id, 'image':iha.image.url, 'city':iha.location.city,'capacity':iha.capacity}
+                vehicle_dictionary = {'name':iha.name, 'id':iha.id, 'image':iha.image.url, 'city':iha.location.city, 'rent':iha.rent, 'operational_altitude':iha.operational_altitude, 'max_altitude':iha.max_altitude, 'max_flight_time':iha.max_flight_time, 'payload_capacity':iha.payload_capacity, 'communication_range':iha.communication_range, 'fuel_capacity':iha.fuel_capacity, 'cruise_speed':iha.cruise_speed, 'max_speed':iha.max_speed, 'max_takeoff_weight':iha.max_takeoff_weight, 'height':iha.height, 'wingspan':iha.wingspan, 'lenght':iha.lenght}
                 vehicles_list.append(vehicle_dictionary)
     request.session['vehicles_list'] = vehicles_list
     return render(request, "search_results.html")
@@ -209,7 +225,7 @@ def order_details(request):
         iha_dealer.earnings += rent
         iha_dealer.save()
         try:
-            order = Order(iha=iha, iha_dealer=iha_dealer, user=user, rent=rent, days=days)
+            order = Order(iha=iha, iha_dealer=iha_dealer, user=user, rent=rent, days=days,)
             order.save()
         except:
             order = Order.objects.get(iha=iha, iha_dealer=iha_dealer, user=user, rent=rent, days=days)

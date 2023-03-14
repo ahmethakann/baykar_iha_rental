@@ -11,7 +11,7 @@
   <title>{% block title %} {% endblock %}</title>
   <style>
     .navbar {
-      background-color: #71cc0971;
+      background-color: #0065d8b9;
     }
   </style>
   {% block css %} {% endblock %}
@@ -25,8 +25,10 @@
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+        <a href="#" class="d-flex mx-auto" style="text-decoration: none; color: black; font-size: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          Welcome {{request.user}}</a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-5">
+        <ul class="navbar-nav ms-auto me-5">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/all_ihas/">All Ihas</a>
           </li>
@@ -43,8 +45,7 @@
             <a class="nav-link active" aria-current="page" href="/signout/">Signout</a>
           </li>
         </ul>
-        <a href="#" style="text-decoration: none; color: black; font-size: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          Welcome {{request.user}}</a>
+
       </div>
     </div>
   </nav>

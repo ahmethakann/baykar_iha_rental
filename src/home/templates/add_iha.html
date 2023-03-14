@@ -24,18 +24,78 @@
     </div>
 
     <div class="row mt-3">
-        <div class="form-group col-md-12">
-            <label><i style="font-weight: bold;">Capacity</i></label>
-            <input type="number" class="form-control" name="capacity" placeholder="Number of Seats">
+        <div class="form-group col-md-6">
+            <label><i style="font-weight: bold;">Maximum Flight Time</i></label>
+            <input type="number" step="any" class="form-control" name="max_flight_time" placeholder="Hours">
+        </div>
+        <div class="form-group col-md-6">
+            <label><i style="font-weight: bold;">Rent</i></label>
+            <input type="number" step="any" class="form-control" name="rent" placeholder="Rental Fee Per Day (TL)">
         </div>
     </div>
 
-    <div class="row mt-3">
-        <div class="form-group col-md-12">
-            <label><i style="font-weight: bold;">Rent</i></label>
-            <input type="number" class="form-control" name="rent" placeholder="Rent (per day)">
-        </div>
+<div class="row mt-3">
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Operational Altitude</i></label>
+        <input type="number" step="any" class="form-control" name="operational_altitude" placeholder="Feet">
     </div>
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Maximum Altitude</i></label>
+        <input type="number" step="any" class="form-control" name="max_altitude" placeholder="Feet">
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Paylod Capacity</i></label>
+        <input type="number" step="any" class="form-control" name="payload_capacity" placeholder="Kg">
+    </div>
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Maximum Takeoff Weight</i></label>
+        <input type="number" step="any" class="form-control" name="max_takeoff_weight" placeholder="Kg">
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Cruise Speed</i></label>
+        <input type="number" step="any" class="form-control" name="cruise_speed" placeholder="Knot">
+    </div>
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Maximum Speed</i></label>
+        <input type="number" step="any" class="form-control" name="max_speed" placeholder="Knot">
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Height</i></label>
+        <input type="number" step="any" class="form-control" name="height" placeholder="Metre">
+    </div>
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Lenght</i></label>
+        <input type="number" step="any" class="form-control" name="lenght" placeholder="Metre">
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Wingspan</i></label>
+        <input type="number" step="any" class="form-control" name="wingspan" placeholder="Metre">
+    </div>
+    <div class="form-group col-md-6">
+        <label><i style="font-weight: bold;">Communication Range</i></label>
+        <input type="number" step="any" class="form-control" name="communication_range" placeholder="Kilometre">
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="form-group col-md-12">
+        <label><i style="font-weight: bold;">Fuel Capacity</i></label>
+        <input type="number" step="any" class="form-control" name="fuel_capacity" placeholder="Litre">
+    </div>
+</div>
+
 
     <button type="submit" class="btn btn-primary mt-3">Submit</button>
   </form>
@@ -43,10 +103,10 @@
 {% endblock %}
 {% block js %}
 <script>
-    if ("{{alert}}" === "true") {
+    {% if alert %}
       alert("Iha added successfully.");
       document.location = "/add_iha";
-    }
+    {% endif %}
   </script>
 {% endblock %}
 

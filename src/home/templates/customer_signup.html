@@ -35,7 +35,7 @@
             
       <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
   
-        <button type="submit" class="btn btn-success" style="background-color: #71cc0971; font-size: 22px; width: 8rem;">Signup</button>
+        <button type="submit" class="btn btn-success" style="background-color: #0065d8b9; font-size: 22px; width: 8rem;">Signup</button>
     </div>
   </form>
   </body>
@@ -44,8 +44,8 @@
   {% block js %}
   <script>
     {% if alert %}
-    alert("You are now successfully registered as a customer")
-    document.location = "/customer_login"
+      alert("You are now successfully registered as a customer")
+      document.location = "/customer_login"
     {% endif %}
   </script>
   {% endblock %}
