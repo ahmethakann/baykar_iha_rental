@@ -8,6 +8,7 @@ urlpatterns = [
     path("iha_dealer_signup/", views.iha_dealer_signup, name="iha_dealer_signup"),
     path("iha_dealer_login/", views.iha_dealer_login, name="iha_dealer_login"),
     path("add_iha/", views.add_iha, name="add_iha"),
+    path("edit_iha/<int:myid>/", views.edit_iha, name="edit_iha"),
     path("all_ihas/", views.all_ihas, name="all_ihas"),
     path("delete_iha/<int:myid>/", views.delete_iha, name="delete_iha"),
     path("customer_homepage/", views.customer_homepage, name="customer_homepage"),

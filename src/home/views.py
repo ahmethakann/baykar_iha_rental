@@ -1,5 +1,6 @@
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.forms import ModelForm
 from django.contrib.auth.models import User
 from . models import *
 from django.contrib.auth import authenticate, login, logout
@@ -162,13 +163,37 @@ def edit_iha(request, myid):
     if request.method == "POST":
         iha_name = request.POST['iha_name']
         city = request.POST['city']
-        capacity = request.POST['capacity']
+        image = request.FILES['image']
         rent = request.POST['rent']
+        operational_altitude = request.POST['operational_altitude']
+        max_altitude = request.POST['max_altitude']
+        max_flight_time = request.POST['max_flight_time']
+        payload_capacity = request.POST['payload_capacity']
+        communication_range = request.POST['communication_range']
+        fuel_capacity = request.POST['fuel_capacity']
+        cruise_speed = request.POST['cruise_speed']
+        max_speed = request.POST['max_speed']
+        max_takeoff_weight = request.POST['max_takeoff_weight']
+        height = request.POST['height']
+        wingspan = request.POST['wingspan']
+        length = request.POST['length']
 
         iha.name = iha_name
         iha.city = city
-        iha.capacity = capacity
         iha.rent = rent
+        iha.operational_altitude = operational_altitude
+        iha.max_altitude = max_altitude
+        iha.max_flight_time = max_flight_time
+        iha.payload_capacity = payload_capacity
+        iha.communication_range = communication_range
+        iha.fuel_capacity = fuel_capacity
+        iha.cruise_speed = cruise_speed
+        iha.max_speed = max_speed
+        iha.max_takeoff_weight = max_takeoff_weight
+        iha.height = height
+        iha.wingspan = wingspan
+        iha.length = length
+
         iha.save()
 
         try:

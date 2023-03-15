@@ -62,7 +62,8 @@
             <th>Height</th>
             <th>Wingspan</th>
             <th>Length</th>
-            <th>Action</th>
+            <th>Delete</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -88,6 +89,10 @@
               <a href="/delete_iha/{{iha.id}}/" class="btn btn-danger"
                   onclick="return confirm('Are you sure you want to delete {{iha.name}}?')">Delete</a>
               </td>
+              <td>
+                <a href="/edit_iha/{{iha.id}}/" class="btn btn-success"
+                    onclick="return confirm('Are you sure you want to edit {{iha.name}}?')">Edit</a>
+                </td>
           </tr>
         {% endfor %}
       </tbody>
