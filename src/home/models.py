@@ -10,7 +10,7 @@ class Location(models.Model):
     
 class IhaDealer(models.Model):
     iha_dealer = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone =  models.CharField(validators = [MinLengthValidator(10), MaxLengthValidator(50)], max_length = 50)
+    phone =  models.CharField(validators = [MinLengthValidator(1), MaxLengthValidator(50)], max_length = 50)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     earnings = models.IntegerField(default=0)
     type = models.CharField(max_length=20, blank=True)
@@ -36,7 +36,7 @@ class Iha(models.Model):
     max_takeoff_weight = models.CharField(max_length=50, blank=True, null=True)
     height = models.CharField(max_length=50, blank=True, null=True)
     wingspan = models.CharField(max_length=50, blank=True, null=True)
-    lenght = models.CharField(max_length=50, blank=True, null=True)
+    length = models.CharField(max_length=50, blank=True, null=True)
 
 
     def __str__(self):

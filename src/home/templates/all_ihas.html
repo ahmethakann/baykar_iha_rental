@@ -1,5 +1,9 @@
 {% extends 'iha_dealer_navbar.html' %}
-{% block title %} Customer Login {% endblock %}
+
+{% block title %}
+  Customer Login
+{% endblock %}
+
 {% block css %}
 <style>
     h1 {
@@ -17,43 +21,81 @@
     th {
         background-color: #0065d8b9;
         color: white;
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        left: 0;
+        z-index: 1;
     }
 
-    th,
-    td {
+    th:first-of-type {
+      position: static;
+    }
+
+    th, td {
         border: 2px solid #ddd;
+        padding: 5px;
     }
 </style>
 {% endblock %}
+
 {% block body %}
 <div class="container">
     {% if ihas %}
     <h1 class="mt-4">Ihas List</h1>
     <div class="users-table mt-4">
-        <table>
-            <tbody>
-                <tr>
-                    <th>Iha Name</th>
-                    <th>Image</th>
-                    <th>City</th>
-                    <th>Capacity</th>
-                    <th>Delete</th>
-                </tr>
-                {% for iha in ihas %}
-                <tr>
-                    <td>{{iha.name}}</td>
-                    <td><img src="{{iha.image.url}}" alt="" width="100px" height="100px"></td>
-                    <td>{{iha.location.city}}</td>
-                    <td>{{iha.capacity}}</td>
-                    <td><a href="/delete_iha/{{iha.id}}/" class="btn btn-danger"
-                            onclick="return confirm('Are you sure you want to delete {{iha.name}}?')">Delete</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+      <table>
+        <thead>
+          <tr>
+            <th>Iha Name</th>
+            <th>Image</th>
+            <th>City</th>
+            <th>Rent</th>
+            <th>Operational Altitude</th>
+            <th>Max Altitude</th>
+            <th>Max Flight Time</th>
+            <th>Payload Capacity</th>
+            <th>Communication Range</th>
+            <th>Fuel Capacity</th>
+            <th>Cruise Speed</th>
+            <th>Max Speed</th>
+            <th>Max Takeoff Weight</th>
+            <th>Height</th>
+            <th>Wingspan</th>
+            <th>Length</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for iha in ihas %}
+        <tr>
+            <td>{{iha.name}}</td>
+            <td><img src="{{iha.image.url}}" alt="" width="100px" height="100px"></td>
+            <td>{{iha.location.city}}</td>
+            <td>{{iha.rent}}</td>
+            <td>{{iha.operational_altitude}}</td>
+            <td>{{iha.max_altitude}}</td>
+            <td>{{iha.max_flight_time}}</td>
+            <td>{{iha.payload_capacity}}</td>
+            <td>{{iha.communication_range}}</td>
+            <td>{{iha.fuel_capacity}}</td>
+            <td>{{iha.cruise_speed}}</td>
+            <td>{{iha.max_speed}}</td>
+            <td>{{iha.max_takeoff_weight}}</td>
+            <td>{{iha.height}}</td>
+            <td>{{iha.wingspan}}</td>
+            <td>{{iha.length}}</td>
+            <td>
+              <a href="/delete_iha/{{iha.id}}/" class="btn btn-danger"
+                  onclick="return confirm('Are you sure you want to delete {{iha.name}}?')">Delete</a>
+              </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
         {% else %}
         <br>
         <h2>No Ihas Added Yet</h2>
         {% endif %}
     </div>
-    {% endblock %}
+</div>
+{% endblock %}

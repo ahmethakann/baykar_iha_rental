@@ -66,23 +66,25 @@ def customer_login(request):
 def iha_dealer_signup(request):
     if request.method == "POST":
         username = request.POST['username']
+        email = request.POST['email']
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
-        email = request.POST['email']
-        city = request.POST['city']
-        phone = request.POST['phone']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
+        phone = request.POST['phone']
+        city = request.POST['city']
 
         if password1 != password2:
             return redirect('/iha_dealer_signup')
 
         user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password1)
         user.save()
+        
         try:
-            location = Location.objects.get(city = city.lower())
+            location = Location.objects.get(city=city.lower())
         except:
             location = None
+        
         if location is not None:
             iha_dealer = IhaDealer(iha_dealer=user, phone=phone, location=location, type="Iha Dealer")
         else:
@@ -94,9 +96,10 @@ def iha_dealer_signup(request):
         return render(request, "iha_dealer_login.html")
     return render(request, "iha_dealer_signup.html")
 
+
 def iha_dealer_login(request):
     if request.user.is_authenticated:
-        return redirect("/")
+            return redirect("/")
     else:
         if request.method == "POST":
             username = request.POST['username']
@@ -104,18 +107,13 @@ def iha_dealer_login(request):
             user = authenticate(username=username, password=password)
 
             if user is not None:
-                try:
-                    user1 = IhaDealer.objects.get(iha_dealer=user)
-                except ObjectDoesNotExist:
-                    # Handle the DoesNotExist exception here
-                    alert = True
-                    return render(request, "iha_dealer_login.html", {"alert": alert})
+                user1 = IhaDealer.objects.get(iha_dealer=user)
                 if user1.type == "Iha Dealer":
                     login(request, user)
                     return redirect("/all_ihas")
                 else:
                     alert = True
-                    return render(request, "iha_dealer_login.html", {"alert": alert})
+                    return render(request, "iha_dealer_login.html", {"alert":alert})
     return render(request, "iha_dealer_login.html")
 
 def signout(request):
@@ -139,7 +137,7 @@ def add_iha(request):
         max_takeoff_weight = request.POST['max_takeoff_weight']
         height = request.POST['height']
         wingspan = request.POST['wingspan']
-        lenght = request.POST['lenght']
+        length = request.POST['length']
         iha_dealer = IhaDealer.objects.get(iha_dealer=request.user)
         
         try:
@@ -148,7 +146,7 @@ def add_iha(request):
             location = Location(city=city)
             location.save()
         
-        iha = Iha(name=iha_name, iha_dealer=iha_dealer, location=location, image=image, rent=rent, operational_altitude=operational_altitude, max_altitude=max_altitude, max_flight_time=max_flight_time, payload_capacity=payload_capacity, communication_range=communication_range, fuel_capacity=fuel_capacity, cruise_speed=cruise_speed, max_speed=max_speed, max_takeoff_weight=max_takeoff_weight, height=height, wingspan=wingspan, lenght=lenght)
+        iha = Iha(name=iha_name, iha_dealer=iha_dealer, location=location, image=image, rent=rent, operational_altitude=operational_altitude, max_altitude=max_altitude, max_flight_time=max_flight_time, payload_capacity=payload_capacity, communication_range=communication_range, fuel_capacity=fuel_capacity, cruise_speed=cruise_speed, max_speed=max_speed, max_takeoff_weight=max_takeoff_weight, height=height, wingspan=wingspan, length=length)
         iha.save()
         alert = True
         return render(request, "add_iha.html", {'alert':alert})
@@ -202,7 +200,7 @@ def search_results(request):
         ihas = Iha.objects.filter(location=a)
         for iha in ihas:
             if iha.is_available == True:
-                vehicle_dictionary = {'name':iha.name, 'id':iha.id, 'image':iha.image.url, 'city':iha.location.city, 'rent':iha.rent, 'operational_altitude':iha.operational_altitude, 'max_altitude':iha.max_altitude, 'max_flight_time':iha.max_flight_time, 'payload_capacity':iha.payload_capacity, 'communication_range':iha.communication_range, 'fuel_capacity':iha.fuel_capacity, 'cruise_speed':iha.cruise_speed, 'max_speed':iha.max_speed, 'max_takeoff_weight':iha.max_takeoff_weight, 'height':iha.height, 'wingspan':iha.wingspan, 'lenght':iha.lenght}
+                vehicle_dictionary = {'name':iha.name, 'id':iha.id, 'image':iha.image.url, 'city':iha.location.city, 'rent':iha.rent, 'operational_altitude':iha.operational_altitude, 'max_altitude':iha.max_altitude, 'max_flight_time':iha.max_flight_time, 'payload_capacity':iha.payload_capacity, 'communication_range':iha.communication_range, 'fuel_capacity':iha.fuel_capacity, 'cruise_speed':iha.cruise_speed, 'max_speed':iha.max_speed, 'max_takeoff_weight':iha.max_takeoff_weight, 'height':iha.height, 'wingspan':iha.wingspan, 'length':iha.length}
                 vehicles_list.append(vehicle_dictionary)
     request.session['vehicles_list'] = vehicles_list
     return render(request, "search_results.html")
