@@ -32,12 +32,12 @@
         {% csrf_token %}
         <div class="row mt-4">
             <div class="col-md-4">
-                <label for="city">City:</label>
-                <input type="text" name="city" id="city" class="form-control" value="{{ request.POST.city|default:'' }}">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{ request.POST.name|default:'' }}">
             </div>
             <div class="col-md-4">
-                <label for="capacity">Capacity:</label>
-                <input type="number" name="capacity" id="capacity" class="form-control" value="{{ request.POST.capacity|default:'' }}">
+                <label for="city">City:</label>
+                <input type="text" name="city" id="city" class="form-control" value="{{ request.POST.city|default:'' }}">
             </div>
             <div class="col-md-4">
                 <label for="rent">Rent:</label>
@@ -48,30 +48,106 @@
                     <option value="Cheap" {% if request.POST.rent == 'Cheap' %}selected{% endif %}>Cheap</option>
                 </select>
             </div>
+            <div class="col-md-4">
+                <label for="city">Operational Altitude:</label>
+                <input type="text" name="operational_altitude" id="operational_altitude" class="form-control" value="{{ request.POST.operational_altitude|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Max Altitude:</label>
+                <input type="text" name="max_altitude" id="max_altitude" class="form-control" value="{{ request.POST.max_altitude|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Max Flight Time:</label>
+                <input type="text" name="max_flight_time" id="max_flight_time" class="form-control" value="{{ request.POST.max_flight_time|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Payload Capacity:</label>
+                <input type="text" name="payload_capacity" id="payload_capacity" class="form-control" value="{{ request.POST.payload_capacity|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Communication Range:</label>
+                <input type="text" name="communication_range" id="communication_range" class="form-control" value="{{ request.POST.communication_range|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Fuel Capacity:</label>
+                <input type="text" name="fuel_capacity" id="fuel_capacity" class="form-control" value="{{ request.POST.fuel_capacity|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Cruise Speed:</label>
+                <input type="text" name="cruise_speed" id="cruise_speed" class="form-control" value="{{ request.POST.cruise_speed|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="Max Speed">Max Takeoff Weight:</label>
+                <input type="text" name="max_takeoff_weight" id="max_takeoff_weight" class="form-control" value="{{ request.POST.max_takeoff_weight|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Height:</label>
+                <input type="text" name="height" id="height" class="form-control" value="{{ request.POST.height|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Wingspan:</label>
+                <input type="text" name="wingspan" id="wingspan" class="form-control" value="{{ request.POST.wingspan|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="city">Length:</label>
+                <input type="text" name="length" id="length" class="form-control" value="{{ request.POST.length|default:'' }}">
+            </div>
+
+
         </div>
         <div class="text-center mt-3">
             <input type="submit" name="search" value="Search" class="btn btn-primary btn-lg">
         </div>
     </form>
     {% if ihas %}
+    <h1 class="mt-4">Ihas List</h1>
     <div class="users-table mt-4">
-        <table>
-            <tbody>
-                <tr>
-                    <th>Iha Name</th>
-                    <th>Image</th>
-                    <th>City</th>
-                    <th>Capacity</th>
-                    <th>Rent</th>
-                </tr>
-                {% for iha in ihas %}
-                <tr>
-                    <td>{{iha.name}}</td>
-                    <td><img src="{{iha.image}}" alt="" width="100px" height="100px"></td>
-                    <td>{{iha.location.city}}</td>
-                    <td>{{iha.payload_capacity}}</td>
-                    <td>{{iha.rent}}</td>
-                </tr>
+      <table>
+        <thead>
+          <tr>
+            <th>Iha Name</th>
+            <th>Image</th>
+            <th>City</th>
+            <th>Rent</th>
+            <th>Operational Altitude</th>
+            <th>Max Altitude</th>
+            <th>Max Flight Time</th>
+            <th>Payload Capacity</th>
+            <th>Communication Range</th>
+            <th>Fuel Capacity</th>
+            <th>Cruise Speed</th>
+            <th>Max Speed</th>
+            <th>Max Takeoff Weight</th>
+            <th>Height</th>
+            <th>Wingspan</th>
+            <th>Length</th>
+            <th>Rent Now</th>
+          </tr>
+        </thead>
+            {% for iha in request.session.vehicles_list %}
+            <tr>
+                <td>{{iha.name}}</td>
+                <td><img src="{{iha.image}}" alt="" width="100px" height="100px"></td>
+                <td>{{iha.city}}</td>
+                <td>{{iha.rent}}</td>
+                <td>{{iha.operational_altitude}}</td>
+                <td>{{iha.max_altitude}}</td>
+                <td>{{iha.max_flight_time}}</td>
+                <td>{{iha.payload_capacity}}</td>
+                <td>{{iha.communication_range}}</td>
+                <td>{{iha.fuel_capacity}}</td>
+                <td>{{iha.cruise_speed}}</td>
+                <td>{{iha.max_speed}}</td>
+                <td>{{iha.max_takeoff_weight}}</td>
+                <td>{{iha.height}}</td>
+                <td>{{iha.wingspan}}</td>
+                <td>{{iha.length}}</td>
+                <td><form action = "/iha_rent/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{iha.id}}">
+                    <input class="btn btn-dark" type="submit" value="Rent Now">
+                    </form></td>
+            </tr>
                 {% endfor %}
             </tbody>
         </table>
