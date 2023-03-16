@@ -6,6 +6,7 @@ from . models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q 
 
 def index(request):
     ihas = Iha.objects.all()
@@ -223,19 +224,45 @@ def customer_homepage(request):
     request.session['vehicles_list'] = vehicles_list
     return render(request, "customer_homepage.html")
 
-def search_results(request):
-    city = request.POST['city']
-    city = city.lower()
+def search_results(request): 
+    city = request.POST.get('city', '').strip().lower()
+    capacity = request.POST.get('capacity', '')
+    rent = request.POST.get('rent', '')
+
+    query = Q(location__city__icontains=city)
+    if capacity:
+        query &= Q(payload_capacity__gte=capacity)
+    if rent:
+        query &= Q(rent=rent)
+
+    ihas = Iha.objects.filter(query).exclude(is_available=False)
+  
     vehicles_list = []
-    location = Location.objects.filter(city = city)
-    for a in location:
-        ihas = Iha.objects.filter(location = a)
-        for iha in ihas:
-            if iha.is_available == True:
-                vehicle_dictionary = {'name':iha.name, 'id':iha.id, 'image':iha.image.url, 'city':iha.location.city, 'rent':iha.rent, 'operational_altitude':iha.operational_altitude, 'max_altitude':iha.max_altitude, 'max_flight_time':iha.max_flight_time, 'payload_capacity':iha.payload_capacity, 'communication_range':iha.communication_range, 'fuel_capacity':iha.fuel_capacity, 'cruise_speed':iha.cruise_speed, 'max_speed':iha.max_speed, 'max_takeoff_weight':iha.max_takeoff_weight, 'height':iha.height, 'wingspan':iha.wingspan, 'length':iha.length}
-                vehicles_list.append(vehicle_dictionary)
+    for iha in ihas:
+        vehicle_dictionary = {
+            'name':iha.name,
+            'id':iha.id,
+            'image':iha.image.url,
+            'city':iha.location.city,
+            'rent':iha.rent,
+            'operational_altitude':iha.operational_altitude,
+            'max_altitude':iha.max_altitude,
+            'max_flight_time':iha.max_flight_time,
+            'payload_capacity':iha.payload_capacity,
+            'communication_range':iha.communication_range,
+            'fuel_capacity':iha.fuel_capacity,
+            'cruise_speed':iha.cruise_speed,
+            'max_speed':iha.max_speed,
+            'max_takeoff_weight':iha.max_takeoff_weight,
+            'height':iha.height,
+            'wingspan':iha.wingspan,
+            'length':iha.length
+        }
+        vehicles_list.append(vehicle_dictionary)
+    
     request.session['vehicles_list'] = vehicles_list
-    return render(request, "search_results.html")
+    return render(request, "search_results.html", {'vehicles_list': vehicles_list})
+
 
 def iha_rent(request):
     id = request.POST['id']

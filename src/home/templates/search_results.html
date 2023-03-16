@@ -27,8 +27,33 @@
 {% endblock %}
 {% block body %}
 <div class="container">
-    {% if request.session.vehicles_list %}
     <h1 class="mt-4">Ihas List</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <label for="city">City:</label>
+                <input type="text" name="city" id="city" class="form-control" value="{{ request.POST.city|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="capacity">Capacity:</label>
+                <input type="number" name="capacity" id="capacity" class="form-control" value="{{ request.POST.capacity|default:'' }}">
+            </div>
+            <div class="col-md-4">
+                <label for="rent">Rent:</label>
+                <select name="rent" id="rent" class="form-control">
+                    <option value="" {% if not request.POST.rent %}selected{% endif %}>--Select--</option>
+                    <option value="Expensive" {% if request.POST.rent == 'Expensive' %}selected{% endif %}>Expensive</option>
+                    <option value="Moderate" {% if request.POST.rent == 'Moderate' %}selected{% endif %}>Moderate</option>
+                    <option value="Cheap" {% if request.POST.rent == 'Cheap' %}selected{% endif %}>Cheap</option>
+                </select>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <input type="submit" name="search" value="Search" class="btn btn-primary btn-lg">
+        </div>
+    </form>
+    {% if ihas %}
     <div class="users-table mt-4">
         <table>
             <tbody>
@@ -39,24 +64,21 @@
                     <th>Capacity</th>
                     <th>Rent</th>
                 </tr>
-                {% for iha in request.session.vehicles_list %}
+                {% for iha in ihas %}
                 <tr>
                     <td>{{iha.name}}</td>
                     <td><img src="{{iha.image}}" alt="" width="100px" height="100px"></td>
-                    <td>{{iha.city}}</td>
-                    <td>{{iha.capacity}}</td>
-                    <td><form action = "/iha_rent/" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="id" value="{{iha.id}}">
-                        <input class="btn btn-dark" type="submit" value="Rent Now">
-                        </form></td>
+                    <td>{{iha.location.city}}</td>
+                    <td>{{iha.payload_capacity}}</td>
+                    <td>{{iha.rent}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        {% else %}
-        <br>
-        <h2>No Ihas Available</h2>
-        {% endif %}
     </div>
-    {% endblock %}
+    {% else %}
+    <br>
+    <h2>No Ihas Available</h2>
+    {% endif %}
+</div>
+{% endblock %}
