@@ -224,19 +224,55 @@ def customer_homepage(request):
     request.session['vehicles_list'] = vehicles_list
     return render(request, "customer_homepage.html")
 
-def search_results(request): 
+def search_results(request):
+    name = request.POST.get('name', '')
     city = request.POST.get('city', '').strip().lower()
-    capacity = request.POST.get('capacity', '')
     rent = request.POST.get('rent', '')
+    operational_altitude = request.POST.get('operational_altitude', '')
+    max_altitude = request.POST.get('max_altitude', '')
+    max_flight_time = request.POST.get('max_flight_time', '')
+    payload_capacity = request.POST.get('payload_capacity', '')
+    communication_range = request.POST.get('communication_range', '')
+    fuel_capacity = request.POST.get('fuel_capacity', '')
+    cruise_speed = request.POST.get('cruise_speed', '')
+    max_speed = request.POST.get('max_speed', '')
+    max_takeoff_weight = request.POST.get('max_takeoff_weight', '')
+    height = request.POST.get('height', '')
+    wingspan = request.POST.get('wingspan', '')
+    length = request.POST.get('length', '')
 
-    query = Q(location__city__icontains=city)
-    if capacity:
-        query &= Q(payload_capacity__gte=capacity)
+    query = Q(name=name)
+    if city:
+        query = Q(location__city__icontains=city)
     if rent:
         query &= Q(rent=rent)
+    if operational_altitude:
+        query &= Q(operational_altitude__gte=operational_altitude)
+    if max_altitude:
+        query &= Q(max_altitude__gte=max_altitude)
+    if max_flight_time:
+        query &= Q(max_flight_time__gte=max_flight_time)
+    if payload_capacity:
+        query &= Q(payload_capacity__gte=payload_capacity)
+    if communication_range:
+        query &= Q(communication_range__gte=communication_range)
+    if fuel_capacity:
+        query &= Q(fuel_capacity__gte=fuel_capacity)
+    if max_speed:
+        query &= Q(max_speed__gte=max_speed)
+    if cruise_speed:
+        query &= Q(cruise_speed__gte=cruise_speed)
+    if max_takeoff_weight:
+        query &= Q(max_takeoff_weight__gte=max_takeoff_weight)
+    if height:
+        query &= Q(height__gte=height)
+    if wingspan:
+        query &= Q(wingspan__lte=wingspan)
+    if length:
+        query &= Q(length__lte=length)
 
     ihas = Iha.objects.filter(query).exclude(is_available=False)
-  
+
     vehicles_list = []
     for iha in ihas:
         vehicle_dictionary = {
@@ -259,9 +295,10 @@ def search_results(request):
             'length':iha.length
         }
         vehicles_list.append(vehicle_dictionary)
-    
+
     request.session['vehicles_list'] = vehicles_list
     return render(request, "search_results.html", {'vehicles_list': vehicles_list})
+
 
 
 def iha_rent(request):
