@@ -38,7 +38,6 @@
                     <th>Image</th>
                     <th>Days</th>
                     <th>Rent</th>
-                    <th>Capacity</th>
                     <th>Action</th>
                 </tr>
                 {% for order in all_orders %}
@@ -47,8 +46,7 @@
                     <td>{{order.iha.name}}</td>
                     <td><img src="{{order.iha.image.url}}" alt="" width="100px" height="100px"></td>
                     <td>{{order.days}}</td>
-                    <td>₹ {{order.rent}}</td>
-                    <td>{{order.iha.capacity}}</td>
+                    <td>{{order.rent}} TL</td>
                     <td><form action = "/complete_order/" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="id" value="{{order.id}}">

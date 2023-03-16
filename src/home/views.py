@@ -214,6 +214,13 @@ def delete_iha(request, myid):
     return redirect("/all_ihas")
 
 def customer_homepage(request):
+    vehicles_list = []
+    ihas = Iha.objects.all()
+    for iha in ihas:
+            if iha.is_available == True:
+                vehicle_dictionary = {'name':iha.name, 'id':iha.id, 'image':iha.image.url, 'city':iha.location.city, 'rent':iha.rent, 'operational_altitude':iha.operational_altitude, 'max_altitude':iha.max_altitude, 'max_flight_time':iha.max_flight_time, 'payload_capacity':iha.payload_capacity, 'communication_range':iha.communication_range, 'fuel_capacity':iha.fuel_capacity, 'cruise_speed':iha.cruise_speed, 'max_speed':iha.max_speed, 'max_takeoff_weight':iha.max_takeoff_weight, 'height':iha.height, 'wingspan':iha.wingspan, 'length':iha.length}
+                vehicles_list.append(vehicle_dictionary)
+    request.session['vehicles_list'] = vehicles_list
     return render(request, "customer_homepage.html")
 
 def search_results(request):
@@ -222,7 +229,7 @@ def search_results(request):
     vehicles_list = []
     location = Location.objects.filter(city = city)
     for a in location:
-        ihas = Iha.objects.filter(location=a)
+        ihas = Iha.objects.filter(location = a)
         for iha in ihas:
             if iha.is_available == True:
                 vehicle_dictionary = {'name':iha.name, 'id':iha.id, 'image':iha.image.url, 'city':iha.location.city, 'rent':iha.rent, 'operational_altitude':iha.operational_altitude, 'max_altitude':iha.max_altitude, 'max_flight_time':iha.max_flight_time, 'payload_capacity':iha.payload_capacity, 'communication_range':iha.communication_range, 'fuel_capacity':iha.fuel_capacity, 'cruise_speed':iha.cruise_speed, 'max_speed':iha.max_speed, 'max_takeoff_weight':iha.max_takeoff_weight, 'height':iha.height, 'wingspan':iha.wingspan, 'length':iha.length}
@@ -306,4 +313,4 @@ def earnings(request):
     for order in orders:
         all_orders.append(order)
     return render(request, "earnings.html", {'amount':iha_dealer.earnings, 'all_orders':all_orders})
-   
+

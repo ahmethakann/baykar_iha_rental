@@ -28,7 +28,7 @@
 {% block body %}
 <div class="container">
     {% if all_orders %}
-    <h1 class="mt-4">Total Earnings: ₹{{amount}}</h1>
+    <h1 class="mt-4">Total Earnings: {{amount}} TL</h1>
     <div class="users-table mt-4">
         <table>
             <tbody>
@@ -38,7 +38,6 @@
                     <th>Image</th>
                     <th>Days</th>
                     <th>Rent</th>
-                    <th>Capacity</th>
                 </tr>
                 {% for order in all_orders %}
                 <tr>
@@ -46,8 +45,7 @@
                     <td>{{order.iha.name}}</td>
                     <td><img src="{{order.iha.image.url}}" alt="" width="100px" height="100px"></td>
                     <td>{{order.days}}</td>
-                    <td>₹ {{order.rent}}</td>
-                    <td>{{order.iha.capacity}}</td>
+                    <td>{{order.rent}} TL</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -1,22 +1,88 @@
 {% extends 'customer_navbar.html' %}
-{% block title %} Search Ihas {% endblock %}
+{% block title %} Customer Login {% endblock %}
 {% block css %}
+<style>
+    h1 {
+        text-align: center;
+        color: black;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    th {
+        background-color: #0065d8b9;
+        color: white;
+    }
+
+    th,
+    td {
+        border: 2px solid #ddd;
+    }
+</style>
 {% endblock %}
+
 {% block body %}
-<br>
-<div class="container ">
-  <div class="p-5 bg-light rounded-3">
-    <div class="container-fluid">
-      <h1 class="display-5 fw-bold">Welcome to Ahmet Hakan Özgüven Online Iha Rental System</h1>
-      <p class="col-md-8 fs-4">You can enter your city below and see the list of available ihas.</p>
+<div class="container">
+    {% if request.session.vehicles_list %}
+    <h1 class="mt-4">Ihas List</h1>
+    <div class="users-table mt-4">
+      <table>
+        <thead>
+          <tr>
+            <th>Iha Name</th>
+            <th>Image</th>
+            <th>City</th>
+            <th>Rent</th>
+            <th>Operational Altitude</th>
+            <th>Max Altitude</th>
+            <th>Max Flight Time</th>
+            <th>Payload Capacity</th>
+            <th>Communication Range</th>
+            <th>Fuel Capacity</th>
+            <th>Cruise Speed</th>
+            <th>Max Speed</th>
+            <th>Max Takeoff Weight</th>
+            <th>Height</th>
+            <th>Wingspan</th>
+            <th>Length</th>
+            <th>Rent Now</th>
+          </tr>
+        </thead>
+                {% for iha in request.session.vehicles_list %}
+                <tr>
+                  <td>{{iha.name}}</td>
+                  <td><img src="{{iha.image}}" alt="" width="100px" height="100px"></td>
+                  <td>{{iha.location.city}}</td>
+                  <td>{{iha.rent}}</td>
+                  <td>{{iha.operational_altitude}}</td>
+                  <td>{{iha.max_altitude}}</td>
+                  <td>{{iha.max_flight_time}}</td>
+                  <td>{{iha.payload_capacity}}</td>
+                  <td>{{iha.communication_range}}</td>
+                  <td>{{iha.fuel_capacity}}</td>
+                  <td>{{iha.cruise_speed}}</td>
+                  <td>{{iha.max_speed}}</td>
+                  <td>{{iha.max_takeoff_weight}}</td>
+                  <td>{{iha.height}}</td>
+                  <td>{{iha.wingspan}}</td>
+                  <td>{{iha.length}}</td>
+                    <td><form action = "/iha_rent/" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{iha.id}}">
+                        <input class="btn btn-dark" type="submit" value="Rent Now">
+                        </form></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <br>
+        <h2>No Ihas Available</h2>
+        {% endif %}
     </div>
-    <form class="w3-container" action="/search_results/" method="post">
-        {% csrf_token %}
-        <br><br>
-        <lable><i style="font-weight: bold; font-size: large;">Enter City Name :</i></lable> 
-        <input type="text" class="form-control mt-3" name="city"><br>
-        <button class="btn btn-primary" type="submit">Search Ihas</button>
-      </form>
-  </div>
-</div>
-{% endblock %}
+    {% endblock %}
